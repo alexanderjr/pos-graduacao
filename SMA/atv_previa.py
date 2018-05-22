@@ -1,6 +1,10 @@
 from sklearn.datasets import load_boston
+from sklearn import datasets, linear_model
+from sklearn import linear_model
 from matplotlib import pyplot as plt
-
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
 import sys
 
 #https://gist.github.com/sanguedemonstro/53071059def69958a97098c41e2e0e51
@@ -8,34 +12,78 @@ import sys
 def clear():
     sys.stderr.write("\x1b[2J\x1b[H")
 
-boston = load_boston()
+def summary(data):
+    data_frame = pd.DataFrame(data.data, columns=data.feature_names)
+    target = pd.DataFrame(data.target, columns=["MEDV"])
 
-#dados da primeira casa (na mesma ordem de feature_names)
-boston.data[:1]
+    x = data_frame["RM"]
+    y = target["MEDV"]
 
-#labels dos valores do primeiro item
-boston.feature_names
+    model = sm.OLS(y,x).fit()
+    predictions = model.predict(x)
 
-#valores alvos
-boston.target
+    model.summary()
 
-#dados da primeira feature de todos os elementos (primeira coluna de feature_names)
-boston.data[:, :8]
+def linear_regression(data):
 
-#posicao da distancia dos grandes centros
-#print boston.data[:1][0][7]
+    # #get all data from specific position data and features
+    # features = [data.feature_names[0], data.feature_names[5]]
+    # feature_data = data.data[0:, [0,5]]
 
+    # #dataframe with values and columns
+    # df = pd.DataFrame(feature_data, columns=features)
+    # #df = pd.DataFrame(data.data, columns=data.feature_names)
+    
+    # #dataframe with target values
+    # target = pd.DataFrame(data.target, columns=["MEDV"])
 
-# print boston.target[:2]
+    # #instance of LinearRegression ML
+    # lm = linear_model.LinearRegression()
+    
+    # #fit our model
+    # model = lm.fit(df,target["MEDV"])
+    
+    # #make predictions
+    # predictions = lm.predict(df)
 
-print boston.data[:, :9]
+    # print "SCORE:"
+    # print (lm.score(df, target["MEDV"]))
+    # print "COEFICIENTE :"
+    # print (lm.coef_)
+    
+    diabetes = datasets.load_diabetes()
 
-exit()
+    print diabetes.feature_names
+    diabetes_X = diabetes.data[:, np.newaxis, 2]
+    print diabetes_X
 
-plt.plot(boston.target, boston.data[:, :9], color='green', marker='o', linestyle='solid')
-# plt.title("Relacao Valor casa X Distancia grandes centros de trabalho")
-plt.ylabel("Distancia dos grandes centros")
-plt.xlabel("Valor Casa")
+    exit()
 
-plt.show()
+    data_X = data.data[:, np.newaxis,2]
 
+    print len(data_X)
+
+    exit()
+
+    qtd_train = 350
+
+    x_train = data.data[0:qtd_train + 1]
+    x_test  = data.data[qtd_train + 1:]
+
+    y_train = data.target[0:qtd_train + 1]
+    y_test  = data.target[qtd_train + 1:]
+
+    regr = linear_model.LinearRegression
+    
+
+linear_regression(load_boston())
+
+# 1 - Escolher uma feature para avaliar coeficiente de determinação, a fim de verificar se existe uma relação entrea a variável de entrada com a de saída (target)
+
+# 2 - Após avaliar, escolher
+
+#https://towardsdatascience.com/simple-and-multiple-linear-regression-in-python-c928425168f9
+
+#https://towardsdatascience.com/a-quick-introduction-to-the-pandas-python-library-f1b678f34673
+
+#http://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html
