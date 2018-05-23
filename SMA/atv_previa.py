@@ -11,10 +11,10 @@ import sys
 def clear():
     sys.stderr.write("\x1b[2J\x1b[H")
 
-def linear_regression(data):
+def linear_regression(data, index, feature_name):
 
     #get only one feature (in this case number of rooms)
-    data_x = data.data[:, np.newaxis, 5]
+    data_x = data.data[:, np.newaxis, index]
 
     qtd_train = 350
 
@@ -31,25 +31,36 @@ def linear_regression(data):
 
     y_predictions = regr.predict(x_test)
 
-    #print("FEATURE ANALISADA: %s" % feature)
-    print('Coefficients: \n', regr.coef_)
+    print("FEATURE ANALISADA: %s" % feature_name)
+    #print('Coefficients: \n', regr.coef_)
+    print regr.score(x_test, y_test)
+    
+    return_mean_squared_error = mean_squared_error(y_test, y_predictions)
+    return_mean_absolute_error = mean_absolute_error(y_test, y_predictions)
+    return_median_absolute_error = median_absolute_error(y_test, y_predictions)
 
-    print("ERRO MEDIO QUADRADO: %.2f" % mean_squared_error(y_test, y_predictions))
-    print("ERRO MEDIO ABSOLUTO: %.2f" % mean_absolute_error(y_test, y_predictions))
-    print("ERRO MEDIANO ABSOLUTO: %.2f" % median_absolute_error(y_test, y_predictions))
+    print("ERRO MEDIO QUADRADO: %.2f" % return_mean_squared_error)
+    print("ERRO MEDIO ABSOLUTO: %.2f" % return_mean_absolute_error)
+    print("ERRO MEDIANO ABSOLUTO: %.2f" % return_median_absolute_error)
     print("\n")
     #count = count + 1
 
-    # Plot outputs
-    plt.scatter(x_test, y_test,  color='black')
-    plt.plot(x_test, y_predictions, color='blue', linewidth=3)
-    plt.xlabel("QTD MEDIA DOS QUARTOS")
-    plt.ylabel("PRECO MEDIO DAS CASAS")
+    return mean_squared_error, mean_absolute_error, median_absolute_error
 
-    plt.xticks(())
-    plt.yticks(())
+    # # Plot outputs
+    # plt.scatter(x_test, y_test,  color='black')
+    # plt.plot(x_test, y_predictions, color='blue', linewidth=3)
+    # plt.xlabel("QTD MEDIA DOS QUARTOS")
+    # plt.ylabel("PRECO MEDIO DAS CASAS")
 
-    plt.show()
-    
+    # plt.xticks(())
+    # plt.yticks(())
 
-linear_regression(load_boston())
+    # plt.show()
+
+data = load_boston()
+
+count = 0
+for feature in data.feature_names:
+    linear_regression(data, count, feature)
+    count = count + 1
