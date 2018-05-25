@@ -2,6 +2,7 @@ from sklearn.datasets import load_boston
 from sklearn import datasets, linear_model
 from sklearn import linear_model
 from sklearn.metrics import mean_squared_error, mean_absolute_error, median_absolute_error
+from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
@@ -10,20 +11,23 @@ import sys
 
 def clear():
     sys.stderr.write("\x1b[2J\x1b[H")
+    
 
 def linear_regression(data):
 
     #get only one feature (in this case number of rooms)
     data_x = data.data[:, np.newaxis, 5]
+    target = data.target
+    # data_x = data_x[0:100]
 
     qtd_train = 350
 
     #split data in train and test
     x_train = data_x[0:qtd_train + 1]
-    x_test  = data_x[qtd_train + 1:]
+    x_test  = data_x[qtd_train + 1:last_position]
 
-    y_train = data.target[0:qtd_train + 1]
-    y_test  = data.target[qtd_train + 1:]
+    y_train = target[0:qtd_train + 1]
+    y_test  = target[qtd_train + 1:last_position]
     
     #creating model
     regr = linear_model.LinearRegression()
@@ -52,4 +56,5 @@ def linear_regression(data):
     plt.show()
     
 
+clear()
 linear_regression(load_boston())
