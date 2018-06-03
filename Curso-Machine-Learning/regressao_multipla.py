@@ -5,6 +5,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, median_absolute_error, mean_absolute_error
+from sklearn.model_selection import cross_val_score
 
 movies = pd.read_csv("datasets/movies_multilinear_reg.csv")
 
@@ -17,6 +18,11 @@ X_train = np.array(X_train).reshape(len(X_train), 15)
 X_test = np.array(X_test).reshape(len(X_test), 15)
 
 modelo = LinearRegression()
+
+#cross validation ou k-fold validation
+score = cross_val_score(modelo, filmes_independentes, filmes_dependentes,cv=10,scoring=)
+
+
 modelo.fit(X_train, Y_train)
 
 Y_predict = modelo.predict(X_test)
