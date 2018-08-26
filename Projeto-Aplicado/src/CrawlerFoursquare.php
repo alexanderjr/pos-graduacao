@@ -8,7 +8,7 @@ class CrawlerFoursquare
     private $type;
     private $city;
     private $state;
-    private $tips;
+    private $zipCode;
     private $qtyReviews;
     private $meanReviews;
     private $address;
@@ -95,19 +95,17 @@ class CrawlerFoursquare
     /**
      * @return mixed
      */
-    public function getTips()
+    public function getZipCode()
     {
-        return $this->tips;
+        return $this->zipCode;
     }
 
     /**
-     * @param mixed $tips
-     * @return CrawlerFoursquare
+     * @param mixed $zipCode
      */
-    public function setTips($tips)
+    public function setZipCode($zipCode)
     {
-        $this->tips = $tips;
-        return $this;
+        $this->zipCode = $zipCode;
     }
 
     /**
@@ -284,9 +282,15 @@ class CrawlerFoursquare
      * @param mixed $reviews
      * @return CrawlerFoursquare
      */
-    public function setReviews($reviews)
+    public function setReviews(Review $reviews)
     {
-        $this->reviews = $reviews;
+        $this->reviews[] = $reviews;
         return $this;
+    }
+
+    public function print()
+    {
+        echo "<pre>";
+        print_r(get_object_vars($this));
     }
 }
